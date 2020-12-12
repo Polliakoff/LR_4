@@ -8,7 +8,7 @@ class transport_net
 {
 
 private:
-    vector<int> strok_stolb;
+    set<int> strok_stolb;
     map<int,int> order;
     map<int,int> colour;
     void dfs(int vershina,stack<int> &sort_stack);
@@ -17,11 +17,22 @@ private:
 public:
     transport_net();
     map< pair<int,int>, int> m_smezhn;
+    map <int, truba_type> pipes;
+    map <int, KS_type> KS_es;
 
-    void generate(map<int,KS_type> &KS_es, map<int,truba_type> &pipes);
+    void generate();
     void vivod(bool output = true);
-    void edit(map<int,truba_type> &pipes, map<int,KS_type> &KS_es);
+    void edit();
     void sort();
+    void new_pipe();
+    void new_KS();
+    void vivod_of_objects();
+    void delete_pipe();
+    void delete_KS();
+    void save_all();
+    void load_all();
+
+
 
 };
 

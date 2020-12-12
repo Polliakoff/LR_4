@@ -104,8 +104,11 @@ void truba_type::load(std::string load_string) {
 
 				case 4:
 					in_servise = stoi(temp_string);
-					cout << "Труба " << id << " Успешно Загружена!" << endl;
 					break;
+                case 5:
+                    connected = stoi(temp_string);
+                    cout << "Труба " << id << " Успешно Загружена!" << endl;
+                    break;
 				}
 
 				temp_string = "";
@@ -150,7 +153,7 @@ std::ostream& operator<<(std::ostream& os, const truba_type& t_t) {
 std::ofstream& operator<<(std::ofstream& ofs, const truba_type& t_t) {
 
 	ofs << "t" << "|" << t_t.get_id() << "|" << t_t.name << "|" << t_t.length << "|" <<
-		t_t.diameter << "|" << t_t.in_servise << "|" << endl;
+        t_t.diameter << "|" << t_t.in_servise << "|" << t_t.connected << "|" << endl;
 	cout << "Труба " << t_t.get_id() << " Успешно Сохранена!" << endl;
 
 	return ofs;

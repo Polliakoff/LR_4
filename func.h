@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <stack>
 #include <numeric>
+#include <set>
 
 using namespace std;
 
@@ -16,8 +17,8 @@ class truba_type;
 class KS_type;
 
 void menu();
-void save_all(const map<int, truba_type>& pipes, const map<int, KS_type>& KS_es);
-void load_all(map<int, truba_type>& pipes, map<int, KS_type>& KS_es);
+//void save_all(const map<int, truba_type>& pipes, const map<int, KS_type>& KS_es);
+//void load_all(map<int, truba_type>& pipes, map<int, KS_type>& KS_es);
 void input_and_check(double& subject, const bool& int_check = 0);
 void input_and_check(std::string& subject, const std::string& name);
 void input_and_check(std::string& subject);
@@ -88,19 +89,6 @@ template <typename T> vector<int> name_to_id(map<int,T> objects, std::string nam
     }
 
     return return_vector;
-
-}
-
-template <typename T> void vivod_vsego(map<int , T>& objects, std::string class_name)
-{
-    if (objects.size() > 0) {
-        for (auto i : objects) {
-            cout<<i.second;
-        }
-    }
-    else {
-        cout << "Нет ни одного объекта категории " << class_name << endl;
-    }
 
 }
 
@@ -183,11 +171,7 @@ template <typename T> void switch_search(map<int,T>& objects) {
     }
 }
 
-template <typename T> void delete_object(map<int,T>& objects) {
-    double id_selection;
-    id_presence(objects,id_selection);
-    objects.erase(int(id_selection));
-}
+
 
 
 

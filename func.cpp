@@ -75,72 +75,72 @@ vector<int> find_by_parameter(map<int, KS_type>& KS_es, const bool& output) {
     return found;
 }
 
-void save_all(const map<int,truba_type>& pipes, const map<int,KS_type>& KS_es) {
+//void save_all(const map<int,truba_type>& pipes, const map<int,KS_type>& KS_es) {
 
-    ofstream fout;
-    string filename;
+//    ofstream fout;
+//    string filename;
 
-    input_and_check(filename, "название Файла");
+//    input_and_check(filename, "название Файла");
 
-    //сохранение в файл
-    fout.open(filename + ".clbr");
+//    //сохранение в файл
+//    fout.open(filename + ".clbr");
 
-    if (fout.is_open()) {
+//    if (fout.is_open()) {
 
-        for (auto i : pipes) {
-            fout<<i.second;
-        }
+//        for (auto i : pipes) {
+//            fout<<i.second;
+//        }
 
-        for (auto i : KS_es) {
-            fout<<i.second;
-        }
-    }
-    else {
-        cout << "Не удалось открыть/создать файл для сохранения";
-    }
+//        for (auto i : KS_es) {
+//            fout<<i.second;
+//        }
+//    }
+//    else {
+//        cout << "Не удалось открыть/создать файл для сохранения";
+//    }
 
-    fout.close();
-}
+//    fout.close();
+//}
 
-void load_all(map<int,truba_type>& pipes, map<int, KS_type>& KS_es) {
-    ifstream fin;//создание потока вывода из файла
-    string filename;
+//void load_all(map<int,truba_type>& pipes, map<int, KS_type>& KS_es) {
+//    ifstream fin;//создание потока вывода из файла
+//    string filename;
 
-    input_and_check(filename, "название Файла");
+//    input_and_check(filename, "название Файла");
 
-    //сохранение труб в файл
-    fin.open(filename + ".clbr");
+//    //сохранение труб в файл
+//    fin.open(filename + ".clbr");
 
-    if (fin.is_open() == false) {
-        cout << "Не удалось открыть этот файл для загрузки" << endl;
-        return;
-    }
+//    if (fin.is_open() == false) {
+//        cout << "Не удалось открыть этот файл для загрузки" << endl;
+//        return;
+//    }
 
-    pipes.clear();
-    KS_es.clear();
+//    pipes.clear();
+//    KS_es.clear();
 
-    string temp_string;
-    int max_KS_id = 0;
-    int max_pipe_id = 0;
+//    string temp_string;
+//    int max_KS_id = 0;
+//    int max_pipe_id = 0;
 
-    while (std::getline(fin, temp_string)) {
+//    while (std::getline(fin, temp_string)) {
 
-        if (temp_string[0] == 't') {
-            truba_type temp_truba;
-            temp_truba.load(temp_string);
-            if (temp_truba.get_id() > max_pipe_id) max_pipe_id = temp_truba.get_id();
-            pipes.emplace(temp_truba.get_id(), temp_truba);
-        }
-        else {
-            KS_type temp_KS;
-            temp_KS.load(temp_string);
-            if (temp_KS.get_id() > max_KS_id) max_KS_id = temp_KS.get_id();
-            KS_es.emplace(temp_KS.get_id(), temp_KS);
-        }
-    }
+//        if (temp_string[0] == 't') {
+//            truba_type temp_truba;
+//            temp_truba.load(temp_string);
+//            if (temp_truba.get_id() > max_pipe_id) max_pipe_id = temp_truba.get_id();
+//            pipes.emplace(temp_truba.get_id(), temp_truba);
+//        }
+//        else {
+//            KS_type temp_KS;
+//            temp_KS.load(temp_string);
+//            if (temp_KS.get_id() > max_KS_id) max_KS_id = temp_KS.get_id();
+//            KS_es.emplace(temp_KS.get_id(), temp_KS);
+//        }
+//    }
 
-    fin.close();
-}
+//    fin.close();
+//}
 
 void input_and_check(double& subject, const bool& int_check) {
     while (true) {
@@ -215,4 +215,5 @@ vector<int> ks_by_eff(map<int, KS_type> KS_es, double effectiveness) {
 
     return return_vector;
 }
+
 

@@ -7,8 +7,8 @@ int main() {
     //создание графа транспортной сети:
     transport_net net;
     //массивы классов
-    map <int, truba_type> pipes;
-    map <int, KS_type> KS_es;
+    net.pipes.clear();
+    net.KS_es.clear();
 	string temp_string;//врмененная строковая переменная (объявлена сверху т. к. используется повсеместно)
 	while (true) {
 		menu();
@@ -19,62 +19,55 @@ int main() {
 			switch (int(selection)) {
 
 			case 1:{
-				//создание новой пустой трубы и помещение ее в вектор труб
-				truba_type temp_truba;
-				temp_truba.vvod();
-				pipes.emplace(temp_truba.get_id(),temp_truba);
+                net.new_pipe();
 			}
 				  break;
 			case 2: {
-				//создание новой пустой КС и помещение ее в вектор КС
-				KS_type temp_KS;
-				temp_KS.vvod();
-				KS_es.emplace(temp_KS.get_id(), temp_KS);
+                net.new_KS();
 			}
 				break;
 			case 3: {
-                vivod_vsego(pipes, "трубы");
-				vivod_vsego(KS_es, "КС");
+                net.vivod_of_objects();
 			}
 				break;
 			case 4: {
-				edit_by_id(pipes);
+                edit_by_id(net.pipes);
 			}
 				break;
 			case 5: {
-				edit_by_id(KS_es);
+                edit_by_id(net.KS_es);
 			}
 				break;
 			case 6: {
-				save_all(pipes, KS_es);
+                net.save_all();
 			}
 				break;
 			case 7: {
-				load_all(pipes, KS_es);
+                net.load_all();
 			}
 				break;
 			case 8: {
-				switch_search(pipes);
+                switch_search(net.pipes);
 			}
 				  break;
 			case 9: {
-				switch_search(KS_es);
+                switch_search(net.KS_es);
 			}
 				  break;
 			case 10:{
-                delete_object(pipes);
+                net.delete_pipe();
 			}
 				 break;
 			case 11: {
-                delete_object(KS_es);
+                net.delete_KS();
 			}
                 break;
             case 12: {
-               net.generate(KS_es,pipes);
+               net.generate();
             }
 				  break;
             case 13: {
-               net.edit(pipes,KS_es);
+               net.edit();
             }
                   break;
             case 14: {
