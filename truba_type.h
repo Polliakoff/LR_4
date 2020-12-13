@@ -14,6 +14,7 @@ public:
 	double diameter;
 	bool in_servise = false;	
     int connected = 0;
+    double weight;
 
 	//методы
 	void vvod();

@@ -13,6 +13,7 @@ private:
     map<int,int> colour;
     void dfs(int vershina,stack<int> &sort_stack);
     stack<int> predki;
+    map<pair<int,int>, pair<double,bool>> deykstra_matrix;
 
 public:
     transport_net();
@@ -31,6 +32,7 @@ public:
     void delete_KS();
     void save_all();
     void load_all();
+    void find_way();
 
 
 

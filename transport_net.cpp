@@ -433,6 +433,136 @@ void transport_net::load_all()
     fin.close();
 }
 
+void transport_net::find_way()
+{
+    if(m_smezhn.size() == 0){
+        cout<<"Транспортная сеть не задана, нахождение кратчайшего пути невозможно "<<endl;
+    }
+    else{
+        double begin_id, end_id;
+        int min_way;
+
+        cout<<"Введите КС начала "<<endl;
+        id_presence(KS_es, begin_id,false);
+
+        cout<<"Введите КС конца "<<endl;
+        id_presence(KS_es, end_id,false);
+        int stage = 0;
+        stack<int> to_watch;
+        set<int> next_to_watch;
+        to_watch.push(-1);
+
+
+        //Дейкстра
+        while(true){
+            if(to_watch.top() == -1){
+                for(auto i:strok_stolb){
+                    if(i!= begin_id){
+                        deykstra_matrix.emplace(make_pair(stage, i),
+                                                make_pair(numeric_limits<double>::infinity(), false));
+                        deykstra_matrix.emplace(make_pair(stage+1, i),
+                                                make_pair(numeric_limits<double>::infinity(), false));
+                    }
+                    else{
+                        deykstra_matrix.emplace(make_pair(stage, i),
+                                                make_pair(0, true));
+                        deykstra_matrix.emplace(make_pair(stage+1, i),
+                                                make_pair(0, true));
+                    }
+                }
+
+                to_watch.pop();
+                to_watch.push(begin_id);
+                stage++;
+            }
+            else{
+                while(!to_watch.empty()){
+                    for(auto i:m_smezhn){
+                        if(i.first.first == to_watch.top()){
+                            if(i.second!=-1){
+                                if(deykstra_matrix[make_pair(stage, i.first.second)].second == false){
+                                    next_to_watch.insert(i.first.second);
+                                }
+                                if(deykstra_matrix[make_pair(stage, i.first.second)].first>
+                                        (pipes[i.second].length + deykstra_matrix[make_pair(stage, to_watch.top())].first)
+                                        && deykstra_matrix[make_pair(stage, i.first.second)].second == false){
+                                    deykstra_matrix[make_pair(stage, i.first.second)].first = pipes[i.second].length+
+                                            deykstra_matrix[make_pair(stage, to_watch.top())].first;
+                                }
+                                deykstra_matrix.emplace(make_pair(stage+1, i.first.second),
+                                                        deykstra_matrix[make_pair(stage, i.first.second)]);
+                            }
+                            else{
+                                deykstra_matrix.emplace(make_pair(stage+1, i.first.second),
+                                                        deykstra_matrix[make_pair(stage, i.first.second)]);
+                            }
+                        }
+                    }
+                    to_watch.pop();
+                }
+                double min = numeric_limits<double>::infinity();
+                int min_key;
+                for(auto &i:deykstra_matrix){
+                    if(i.first.first == stage && i.second.second == false && i.second.first<min){
+                        min = i.second.first;
+                        min_key = i.first.second;
+                    }
+                }
+                deykstra_matrix[make_pair(stage,min_key)].second=true;
+                deykstra_matrix[make_pair(stage+1,min_key)].second=true;
+                for(auto i:next_to_watch){
+                    to_watch.push(i);
+                }
+                next_to_watch.clear();
+
+                for(auto &i:deykstra_matrix){
+
+                    if(i.first.first == stage && i.first.second == end_id && i.second.second == true){
+                        min_way = i.second.first;
+                        cout<<"Наименьший путь от КС "<<begin_id<<" до КС "<<end_id
+                           <<" Составляет "<<min_way<<endl;
+
+                        cout<<"Матрица алгоритма :"<<endl;
+                        for(auto i : strok_stolb)
+                        {
+                            cout<<"\t"<<i;
+                        }
+                        cout<<endl;
+
+                        for(int i = 0; i<=stage; i++)
+                        {
+                            cout<<i;
+                            for(auto j : strok_stolb)
+                            {
+                                cout<<"\t"<<deykstra_matrix[make_pair(i,j)].first;
+                                if(deykstra_matrix[make_pair(i,j)].second==true) cout<<"p";
+                            }
+                            cout<<endl;
+                        }
+                        deykstra_matrix.clear();
+                        return;
+                    }
+                }
+
+                bool infinity_cycle = true;
+                for(auto i:strok_stolb){
+                    if(deykstra_matrix[make_pair(stage,i)].first != deykstra_matrix[make_pair(stage-1,i)].first
+                            ||deykstra_matrix[make_pair(stage,i)].second != deykstra_matrix[make_pair(stage-1,i)].second ){
+                        infinity_cycle = false;
+                    }
+                }
+
+                if(infinity_cycle == true){
+                    cout<<"Для введенной пары вершин вторая не достижима из первой"<<endl;
+                    deykstra_matrix.clear();
+                    return;
+                }
+                stage++;
+            }
+        }
+    }
+}
+
 void transport_net::dfs(int vershina,stack<int> &sort_stack)
 {
     bool there_is_way = false;

@@ -78,12 +78,16 @@ int main() {
                net.vivod();
             }
                   break;
+            case 16: {
+               net.find_way();
+            }
+                  break;
 			case 0: {
 				return 0;
 			}
 				  break;
 			default: {
-                cout << "введите цифру от 0 до 15 для выбора действия" << endl;
+                cout << "введите цифру от 0 до 16 для выбора действия" << endl;
 			}
 				   break;
 			}
