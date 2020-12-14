@@ -15,8 +15,8 @@ public:
 	bool in_servise = false;	
     int connected = 0;
     double weight;
-    int prop_sbosobn;
-    int current_potok = 0;
+    double prop_sbosobn;
+    double current_potok = 0;
 
 
 	//методы

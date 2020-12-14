@@ -387,6 +387,7 @@ void transport_net::load_all()
     pipes.clear();
     KS_es.clear();
     m_smezhn.clear();
+    strok_stolb.clear();
     order.clear();
 
     string load_string;
@@ -571,6 +572,10 @@ void transport_net::max_potok()
     else{
         double begin_id, end_id;
 
+        for(auto &i:pipes){
+            i.second.current_potok = 0;
+        }
+
         cout<<"Введите КС начала "<<endl;
         id_presence(KS_es, begin_id,false);
 
@@ -579,9 +584,7 @@ void transport_net::max_potok()
 
         while(true){
             floyd_matrix.clear();
-            for(auto &i:pipes){
-                i.second.current_potok = 0;
-            }
+
             set<int> to_watch;
 
             //Объявление истока (Шаг 1)
@@ -597,6 +600,7 @@ void transport_net::max_potok()
                     if(m_smezhn[make_pair(*current_iterator,i)] != -1 && !(floyd_matrix.find(i) != floyd_matrix.end())){
                         if(pipes[m_smezhn[make_pair(*current_iterator,i)]].current_potok
                                 != pipes[m_smezhn[make_pair(*current_iterator,i)]].prop_sbosobn){
+
 
                             floyd_matrix.emplace(i, node(true,*current_iterator,
                                                          min(floyd_matrix[*current_iterator].potok,

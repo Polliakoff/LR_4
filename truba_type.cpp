@@ -108,6 +108,7 @@ void truba_type::load(std::string load_string) {
                         if (temp_string[k] == '.') temp_string[k] = ',';
                     }
                     diameter = stod(temp_string);
+                    prop_sbosobn = int(diameter);
                     break;
 
                 case 4:

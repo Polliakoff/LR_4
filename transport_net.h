@@ -12,7 +12,7 @@ private:
     struct node{
         bool znak;
         int prev;
-        int potok;
+        double potok;
         int colour = white;
 
 
@@ -20,13 +20,13 @@ private:
         }
 
 
-        node(bool znak_, int prev_, int potok_){
+        node(bool znak_, int prev_, double potok_){
             znak = znak_;
             prev = prev_;
             potok = potok_;
         }
 
-        node(bool znak_, int prev_, int potok_, int colour_){
+        node(bool znak_, int prev_, double potok_, int colour_){
             znak = znak_;
             prev = prev_;
             potok = potok_;
