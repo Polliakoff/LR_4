@@ -26,6 +26,8 @@ void truba_type::vvod() {
     input_and_check(input);
     length = input;
     weight = length;
+    //prop_sbosobn = int(pow(diameter,5/2)/length);
+    prop_sbosobn = int(diameter);
 
     cout << "¬ведите диаметр трубы" << endl;
     input_and_check(input);
@@ -48,11 +50,14 @@ void truba_type::edit() {
         if (input == "y") {
             in_servise = 1;
             weight = std::numeric_limits<double>::infinity();
+            prop_sbosobn = 0;
             break;
         }
         else if (input == "n") {
             in_servise = 0;
             weight = length;
+//            prop_sbosobn = int(pow(diameter,5/2)/length);
+            prop_sbosobn = int(diameter);
             break;
         }
         else {

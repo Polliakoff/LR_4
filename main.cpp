@@ -82,6 +82,10 @@ int main() {
                net.find_way();
             }
                   break;
+            case 17: {
+               net.max_potok();
+            }
+                  break;
 			case 0: {
 				return 0;
 			}

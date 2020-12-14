@@ -8,12 +8,46 @@ class transport_net
 {
 
 private:
+
+    struct node{
+        bool znak;
+        int prev;
+        int potok;
+        int colour = white;
+
+
+        node(){
+        }
+
+
+        node(bool znak_, int prev_, int potok_){
+            znak = znak_;
+            prev = prev_;
+            potok = potok_;
+        }
+
+        node(bool znak_, int prev_, int potok_, int colour_){
+            znak = znak_;
+            prev = prev_;
+            potok = potok_;
+            colour = colour_;
+        }
+    };
     set<int> strok_stolb;
     map<int,int> order;
     map<int,int> colour;
     void dfs(int vershina,stack<int> &sort_stack);
     stack<int> predki;
     map<pair<int,int>, pair<double,bool>> deykstra_matrix;
+    map<int, node>floyd_matrix;
+
+    enum colours{
+        white = 0,
+        grey = 1,
+        black = 2
+    };
+
+
 
 public:
     transport_net();
@@ -33,6 +67,7 @@ public:
     void save_all();
     void load_all();
     void find_way();
+    void max_potok();
 
 
 

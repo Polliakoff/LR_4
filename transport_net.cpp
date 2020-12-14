@@ -563,6 +563,105 @@ void transport_net::find_way()
     }
 }
 
+void transport_net::max_potok()
+{
+    if(m_smezhn.size() == 0){
+        cout<<"Транспортная сеть не задана, нахождение максимального потока не возможно "<<endl;
+    }
+    else{
+        double begin_id, end_id;
+
+        cout<<"Введите КС начала "<<endl;
+        id_presence(KS_es, begin_id,false);
+
+        cout<<"Введите КС конца "<<endl;
+        id_presence(KS_es, end_id,false);
+
+        while(true){
+            floyd_matrix.clear();
+            for(auto &i:pipes){
+                i.second.current_potok = 0;
+            }
+            set<int> to_watch;
+
+            //Объявление истока (Шаг 1)
+            floyd_matrix.emplace(begin_id, node(true,begin_id,numeric_limits<double>::infinity(),grey));
+            to_watch.insert(begin_id);
+
+            //Прямой ход (шаг 2)
+            while(true){
+                auto current_iterator = to_watch.begin();
+                for(auto i:strok_stolb){
+
+                    //исходящие
+                    if(m_smezhn[make_pair(*current_iterator,i)] != -1 && !(floyd_matrix.find(i) != floyd_matrix.end())){
+                        if(pipes[m_smezhn[make_pair(*current_iterator,i)]].current_potok
+                                != pipes[m_smezhn[make_pair(*current_iterator,i)]].prop_sbosobn){
+
+                            floyd_matrix.emplace(i, node(true,*current_iterator,
+                                                         min(floyd_matrix[*current_iterator].potok,
+                                                         pipes[m_smezhn[make_pair(*current_iterator,i)]].prop_sbosobn -
+                                    pipes[m_smezhn[make_pair(*current_iterator,i)]].current_potok),grey));
+                            to_watch.insert(i);
+
+                        }
+                    }
+                    //входящие
+                    if(m_smezhn[make_pair(i,*current_iterator)] != -1
+                            && !(floyd_matrix.find(i) != floyd_matrix.end())
+                            && pipes[m_smezhn[make_pair(i,*current_iterator)]].current_potok!=0){
+
+                        floyd_matrix.emplace(i, node(false,*current_iterator,
+                                                     min(floyd_matrix[*current_iterator].potok,
+                                                     pipes[m_smezhn[make_pair(*current_iterator,i)]].current_potok),grey));
+                        to_watch.insert(i);
+                    }
+                }
+
+                floyd_matrix[*current_iterator].colour=black;
+                to_watch.erase(*current_iterator);
+
+                if(floyd_matrix.find(end_id) != floyd_matrix.end()){
+                    break;
+                }
+
+                if(to_watch.empty()){
+                    int mpt = 0;
+                    for(auto i:pipes){
+                        if(i.second.prop_sbosobn == i.second.current_potok){
+                            mpt+=i.second.prop_sbosobn;
+                        }
+                    }
+                    if(mpt==0){
+                        cout<<"Максимальный поток равен нулю(скорее всего КС не связаны)"<<endl;
+                    }
+                    else{
+                        cout<<"Максимальный поток между данными КС равен "<< mpt <<endl;
+                    }
+
+                    return;
+                }
+            }
+
+            //Обратный ход (Шаги 4 и 5)
+            int potok_change=floyd_matrix[end_id].potok;
+            int current_ks = end_id;
+            while(true){
+                if(floyd_matrix[current_ks].znak==true){
+                    pipes[m_smezhn[make_pair(floyd_matrix[current_ks].prev,current_ks)]].current_potok+=potok_change;
+                }
+                else{
+                    pipes[m_smezhn[make_pair(current_ks,floyd_matrix[current_ks].prev)]].current_potok-=potok_change;
+                }
+                current_ks = floyd_matrix[current_ks].prev;
+                if(current_ks == begin_id){
+                    break;
+                }
+            }
+        }
+    }
+}
+
 void transport_net::dfs(int vershina,stack<int> &sort_stack)
 {
     bool there_is_way = false;
