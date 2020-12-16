@@ -540,6 +540,26 @@ void transport_net::find_way()
                             }
                             cout<<endl;
                         }
+
+                        //обратный ход
+                        cout<<"Путь (От конца до начала): "<<endl;
+                        int current_ks = end_id;
+                        cout<<current_ks<<endl;
+                        while(current_ks!= begin_id){
+                            for(auto i: strok_stolb){
+                                if(m_smezhn[make_pair(i,current_ks)]!=-1  && deykstra_matrix[make_pair(stage,i)].second == true ){
+                                    if(deykstra_matrix[make_pair(stage,i)].first
+                                            ==(deykstra_matrix[make_pair(stage,current_ks)].first
+                                               -pipes[m_smezhn[make_pair(i,current_ks)]].length)){
+                                        cout<<i<<endl;
+                                        current_ks = i;
+                                        break;
+                                 }
+                                }
+                            }
+                        }
+
+
                         deykstra_matrix.clear();
                         return;
                     }
@@ -637,7 +657,7 @@ void transport_net::max_potok()
                         }
                     }
                     if(mpt==0){
-                        cout<<"Максимальный поток равен нулю(скорее всего КС не связаны)"<<endl;
+                        cout<<"Максимальный поток равен нулю(КС не связаны или связывающая их труба в ремонте)"<<endl;
                     }
                     else{
                         cout<<"Максимальный поток между данными КС равен "<< mpt <<endl;
