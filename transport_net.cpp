@@ -554,7 +554,7 @@ void transport_net::find_way()
                                         cout<<i<<endl;
                                         current_ks = i;
                                         break;
-                                 }
+                                    }
                                 }
                             }
                         }
@@ -651,8 +651,10 @@ void transport_net::max_potok()
 
                 if(to_watch.empty()){
                     int mpt = 0;
+                    vector<int> saturated;
                     for(auto i:pipes){
                         if(i.second.prop_sbosobn == i.second.current_potok){
+                            saturated.push_back(i.first);
                             mpt+=i.second.prop_sbosobn;
                         }
                     }
@@ -661,6 +663,10 @@ void transport_net::max_potok()
                     }
                     else{
                         cout<<"Максимальный поток между данными КС равен "<< mpt <<endl;
+                        cout<<"Трубы ограничившие макс поток: "<<endl;
+                        for(auto i: saturated){
+                            cout<<i<<endl;
+                        }
                     }
 
                     return;
